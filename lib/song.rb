@@ -3,6 +3,18 @@ class Song
   @@all = []
   # @break = false
 
+  # def initialize
+  #   @artist_name = "Thundercat"
+  # end
+
+  # def artist_name=(artist)
+  #   @artist_name = artist
+  # end
+  #
+  # def artist_name
+  #   @artist_name
+  # end
+
   def self.create
     song = self.new
 
@@ -45,6 +57,41 @@ class Song
     end
   end
 
+  def self.alphabetical
+    # binding.pry
+    @@all.sort { |obj1, obj2|
+      obj1.name <=> obj2.name
+    }
+  end
+
+  def self.new_from_filename (name)
+    artist, song_name = name.split("-").collect { |word|
+      word.strip
+    }
+
+    song = create_by_name(song_name[0...song_name.length-4])
+    song.artist_name = artist #can't call a setter without 'self'
+
+    song
+  end
+
+
+  def self.create_from_filename (name)
+    artist, song_name = name.split("-").collect { |word|
+      word.strip
+    }
+
+    song = create_by_name(song_name[0...song_name.length-4])
+    song.artist_name = artist #can't call a setter without 'self'
+
+    song.save
+  end
+
+  # def artist_name=(name)
+  #   binding.pry
+  #   @artist_name = name
+  # end
+
   def self.all
     @@all
   end
@@ -53,4 +100,7 @@ class Song
     self.class.all << self
   end
 
+  def self.destroy_all
+    @@all = []
+  end
 end
